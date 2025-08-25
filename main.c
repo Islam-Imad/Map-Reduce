@@ -8,8 +8,8 @@
 int main()
 {
     struct MapReduceSystem MR;
-    init_MapReduceSystem(&MR, word_count_mapper, word_count_reducer, MR_DefaultHashPartition, 4);
-    MR_Run(&MR, "../samples/01.txt");
+    init_MapReduceSystem(&MR, word_count_mapper, word_count_reducer, MR_DefaultHashPartition, 1);
+    MR_Run(&MR, "../samples/03.txt");
     destroy_MapReduceSystem(&MR);
     return 0;
 }
