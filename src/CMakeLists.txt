@@ -5,4 +5,5 @@ add_library(
     partition.c
     reducers.c
     mr_sys.c
+    thread_pool.c
 )

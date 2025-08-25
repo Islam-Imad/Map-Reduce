@@ -2,12 +2,13 @@
 #define PARTITION_H
 
 #include <pair.h>
-
+#include <pthread.h>
 struct partition
 {
     int next;
     int size;
     int capacity;
+    pthread_mutex_t lock;
     struct pair *pairs;
 };
 
@@ -17,7 +18,7 @@ int add_pair(struct partition *p, struct pair *new_pair);
 
 void free_partition(struct partition *p);
 
-void print_partition(const struct partition *p);
+void print_partition(struct partition *p);
 
 void sort_partition(struct partition *p);
 
