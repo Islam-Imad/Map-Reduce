@@ -5,11 +5,11 @@
 #include "mappers.h"
 #include "reducers.h"
 
-int main()
+int main(int argc, char *argv[])
 {
-    struct MapReduceSystem MR;
-    init_MapReduceSystem(&MR, word_count_mapper, word_count_reducer, MR_DefaultHashPartition, 1);
-    MR_Run(&MR, "../samples/03.txt");
-    destroy_MapReduceSystem(&MR);
+    struct MapReduceSystem mr_sys;
+    init_MapReduceSystem(&mr_sys, word_count_mapper, word_count_reducer, MR_DefaultHashPartition, 4, 2, 2);
+    MR_Run(&mr_sys, argc, argv);
+    destroy_MapReduceSystem(&mr_sys);
     return 0;
 }

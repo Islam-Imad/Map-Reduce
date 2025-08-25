@@ -12,6 +12,8 @@ typedef int (*Partitioner)(char *key, int num_partitions);
 struct MapReduceSystem
 {
     int num_partitions;
+    int num_mappers;
+    int num_reducers;
     struct partition *partitions;
     Mapper maper;
     Reducer reducer;
@@ -19,12 +21,36 @@ struct MapReduceSystem
 };
 
 int MR_DefaultHashPartition(char *key, int num_partitions);
-void init_MapReduceSystem(struct MapReduceSystem *mr_sys, Mapper map_func, Reducer reduce_func, Partitioner partition_func, int num_partitions);
+void init_MapReduceSystem(
+    struct MapReduceSystem *mr_sys,
+    Mapper map_func,
+    Reducer reduce_func,
+    Partitioner partition_func,
+    int num_partitions,
+    int num_mappers,
+    int num_reducers);
+
 void destroy_MapReduceSystem(struct MapReduceSystem *mr_sys);
+
+struct map_task_args
+{
+    struct MapReduceSystem *mr_sys;
+    char *file_name;
+};
+
+void map_task(void *arg);
+
+struct reduce_task_args
+{
+    struct MapReduceSystem *mr_sys;
+    int partition_number;
+};
+
+void reduce_task(void *arg);
 
 void MR_Emit(struct MapReduceSystem *mr_sys, char *key, char *value);
 char *MR_Get(struct MapReduceSystem *mr_sys, char *key, int partition_number);
 void MR_BurnPartition(struct MapReduceSystem *mr_sys, int partiton_number);
-void MR_Run(struct MapReduceSystem *mr_sys, char *file_name);
+void MR_Run(struct MapReduceSystem *mr_sys, int argc, char *argv[]);
 
 #endif /* MR_SYS_H */
