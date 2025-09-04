@@ -1,0 +1,10 @@
+sales_team_A 150
+sales_team_B 200
+sales_team_A 300
+engineering 450
+sales_team_B 180
+marketing 250
+engineering 600
+marketing 320
+sales_team_A 220
+engineering 380
