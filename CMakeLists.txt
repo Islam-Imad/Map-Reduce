@@ -5,5 +5,7 @@ set(CMAKE_C_STANDARD 99)
 
 include_directories(include)
 add_subdirectory(src)
-add_executable(map_reduce_st main.c)
-target_link_libraries(map_reduce_st PRIVATE map_reduce)
+
+# Original single-function executable
+add_executable(MapReduce main.c)
+target_link_libraries(MapReduce PRIVATE map_reduce)
