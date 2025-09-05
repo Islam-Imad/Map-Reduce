@@ -89,13 +89,13 @@ void sort_partition(struct partition *p)
 
 char *get_next(struct partition *p, char *key)
 {
+    char *value = NULL;
     pthread_mutex_lock(&p->lock);
     if ((p->next < p->size) && (strcmp(key, p->pairs[p->next].key) == 0))
     {
+        value = p->pairs[p->next].value;
         p->next += 1;
-        pthread_mutex_unlock(&p->lock);
-        return p->pairs[p->next - 1].value;
     }
     pthread_mutex_unlock(&p->lock);
-    return NULL;
+    return value;
 }
