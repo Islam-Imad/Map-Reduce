@@ -57,7 +57,7 @@ void reduce_task(void *arg)
 void MR_Run(struct MapReduceSystem *mr_sys, int argc, char *argv[])
 {
     struct threads_pool map_pool;
-    init_threads_pool(&map_pool, mr_sys->num_mappers);
+    init_threads_pool(&map_pool, mr_sys->num_mappers, argc - 1);
 
     for (int i = 1; i < argc; i++)
     {
@@ -71,7 +71,7 @@ void MR_Run(struct MapReduceSystem *mr_sys, int argc, char *argv[])
     }
     wait_shutdown_threads_pool(&map_pool);
     struct threads_pool reduce_pool;
-    init_threads_pool(&reduce_pool, mr_sys->num_reducers);
+    init_threads_pool(&reduce_pool, mr_sys->num_reducers, mr_sys->num_partitions);
     for (int i = 0; i < mr_sys->num_partitions; ++i)
     {
         struct reduce_task_args *args = malloc(sizeof(struct reduce_task_args));

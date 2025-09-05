@@ -17,7 +17,7 @@ void free_pair(struct pair *p)
 
 void print_pair(struct pair *p)
 {
-    printf("Key: %s, Value: %s\n", p->key, p->value);
+    printf("Key: %s, Value: %s ", p->key, p->value);
 }
 
 int pair_cmp(const struct pair *pair_a, const struct pair *pair_b)

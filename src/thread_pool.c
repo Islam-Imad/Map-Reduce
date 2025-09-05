@@ -8,7 +8,6 @@ void init_task_queue(struct task_queue *queue)
     queue->front = NULL;
     queue->rear = NULL;
     queue->size = 0;
-    pthread_mutex_init(&queue->lock, NULL);
 }
 
 void destroy_task_queue(struct task_queue *queue)
@@ -18,12 +17,10 @@ void destroy_task_queue(struct task_queue *queue)
         task_t task;
         dequeue_task(queue, &task);
     }
-    pthread_mutex_destroy(&queue->lock);
 }
 
 void enqueue_task(struct task_queue *queue, task_t task)
 {
-    pthread_mutex_lock(&queue->lock);
     if (queue->size == 0)
     {
         struct task_node *new_node = (struct task_node *)malloc(sizeof(struct task_node));
@@ -42,12 +39,10 @@ void enqueue_task(struct task_queue *queue, task_t task)
         queue->rear = new_node;
         queue->size++;
     }
-    pthread_mutex_unlock(&queue->lock);
 }
 
 void dequeue_task(struct task_queue *queue, task_t *task)
 {
-    pthread_mutex_lock(&queue->lock);
     if (queue->size > 0)
     {
         struct task_node *temp = queue->front;
@@ -65,7 +60,6 @@ void dequeue_task(struct task_queue *queue, task_t *task)
         task->function = NULL;
         task->argument = NULL;
     }
-    pthread_mutex_unlock(&queue->lock);
 }
 
 void execute_tasks(struct task_queue *queue)
@@ -91,13 +85,14 @@ void *worker_thread(void *arg)
         {
             pthread_cond_wait(&pool->not_empty, &pool->lock);
         }
-        if (pool->task_queue.size == 0 && pool->shutdown)
+        if (pool->num_tasks == 0 && pool->shutdown)
         {
             pthread_mutex_unlock(&pool->lock);
             break;
         }
         task_t task;
         dequeue_task(&pool->task_queue, &task);
+        pool->num_tasks--;
         pthread_mutex_unlock(&pool->lock);
         if (task.function != NULL)
         {
@@ -107,10 +102,11 @@ void *worker_thread(void *arg)
     return NULL;
 }
 
-void init_threads_pool(struct threads_pool *pool, int num_threads)
+void init_threads_pool(struct threads_pool *pool, int num_threads, int num_tasks)
 {
     pool->shutdown = 0;
     pool->num_threads = num_threads;
+    pool->num_tasks = num_tasks;
     pool->threads = malloc(num_threads * sizeof(pthread_t));
     init_task_queue(&pool->task_queue);
     pthread_mutex_init(&pool->lock, NULL);

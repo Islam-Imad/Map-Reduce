@@ -57,8 +57,9 @@ void print_partition(struct partition *p)
     for (int i = 0; i < p->size; i++)
     {
         print_pair(&p->pairs[i]);
-        printf("\n=====================\n");
+        printf(" :|: ");
     }
+    printf("\n");
     pthread_mutex_unlock(&p->lock);
 }
 
@@ -71,7 +72,7 @@ void sort_partition(struct partition *p)
         int j = i;
         while (j > 0)
         {
-            if (pair_cmp(&p->pairs[j], &p->pairs[j - 1]) == -1)
+            if (pair_cmp(&p->pairs[j], &p->pairs[j - 1]) < 0)
             {
                 temp = p->pairs[j];
                 p->pairs[j] = p->pairs[j - 1];

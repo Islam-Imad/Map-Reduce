@@ -9,3 +9,7 @@ add_subdirectory(src)
 # Original single-function executable
 add_executable(MapReduce main.c)
 target_link_libraries(MapReduce PRIVATE map_reduce)
+
+# New executable for comparison
+add_executable(MapReduceCmp main_cmp.c)
+target_link_libraries(MapReduceCmp PRIVATE map_reduce)

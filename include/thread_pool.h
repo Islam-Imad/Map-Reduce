@@ -17,7 +17,6 @@ struct task_node
 
 struct task_queue
 {
-    pthread_mutex_t lock;
     struct task_node *front;
     struct task_node *rear;
     int size;
@@ -36,6 +35,7 @@ void execute_tasks(struct task_queue *queue);
 
 struct threads_pool
 {
+    int num_tasks;
     int num_threads;
     int shutdown;
     pthread_t *threads;
@@ -46,7 +46,7 @@ struct threads_pool
 
 void *worker_thread(void *arg);
 
-void init_threads_pool(struct threads_pool *pool, int num_threads);
+void init_threads_pool(struct threads_pool *pool, int num_threads, int num_tasks);
 
 void add_task(struct threads_pool *pool, task_t task);
 

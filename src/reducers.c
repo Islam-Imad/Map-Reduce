@@ -9,9 +9,9 @@ void word_count_reducer(struct MapReduceSystem *mr_sys, char *key, int partition
     char *value;
     while ((value = MR_Get(mr_sys, key, partition_number)) != NULL)
     {
-        count += atoi(value);
+        count += 1;
     }
-    printf("%s : %d\n", key, count);
+    printf("%s:%d\n", key, count);
 }
 
 void number_sum_reducer(struct MapReduceSystem *mr_sys, char *key, int partition_number)
@@ -30,7 +30,7 @@ void department_max_reducer(struct MapReduceSystem *mr_sys, char *key, int parti
     int max_value = 0;
     char *value;
     int current_value;
-    
+
     while ((value = MR_Get(mr_sys, key, partition_number)) != NULL)
     {
         current_value = atoi(value);
@@ -47,13 +47,13 @@ void average_reducer(struct MapReduceSystem *mr_sys, char *key, int partition_nu
     double sum = 0.0;
     int count = 0;
     char *value;
-    
+
     while ((value = MR_Get(mr_sys, key, partition_number)) != NULL)
     {
         sum += atof(value);
         count++;
     }
-    
+
     if (count > 0)
     {
         printf("%s average: %.2f (count: %d)\n", key, sum / count, count);
