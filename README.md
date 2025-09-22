@@ -84,12 +84,13 @@ The framework implements a sophisticated thread pool system:
 
 ```c
 struct threads_pool {
-    int num_threads;           // Configurable thread count
-    int shutdown;              // Graceful shutdown flag
-    pthread_t *threads;        // Worker thread array
-    struct task_queue task_queue;  // Thread-safe task queue
-    pthread_mutex_t lock;      // Pool synchronization
-    pthread_cond_t not_empty;  // Task availability signal
+    int num_tasks;
+    int num_threads;
+    int shutdown;
+    pthread_t *threads;
+    struct task_queue task_queue;
+    pthread_mutex_t lock;
+    pthread_cond_t not_empty;
 };
 ```
 
